@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile {{profile}}</title>
+</head>
+<body>
+    <h1>{{ profile.user }}</h1>
+    <h2>About: {{ profile.about }}</h2>
+    <img class="avatar" src='{{ profile.avatar.url }}' alt='image'>
+
+    {% if user.id == profile.user.id %}
+    <a href="{% url 'core:edit_profile' user_id=profile.user.id %}">Редактировать профиль</a>
+    {% else %}
+    <form action="{% url 'core:add_remove_friend' user_id=profile.user.id %}" method="post">
+        {% csrf_token %}
+        {% if profile.user in user.profile.friends.all %}
+            <button type="submit">Удалить из друзей</button>
+        {% else %}
+            <button type="submit">Добавить в друзья</button>
+        {% endif %}
+    </form>
+    <p> Друзья мои</p>
+    {% for friend in user.profile.friends.all %}
+        <p>{{friend}}</p>
+    {% endfor %}
+
+    <p> Друзья профиля</p>
+    {% for friend in profile.friends.all %}
+        <p>{{friend}}</p>
+    {% endfor %}
+
+    {% endif %}
+
+
+
+</body>
+</html>

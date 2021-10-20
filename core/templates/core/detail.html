@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }}</title>
+</head>
+<body>
+    <p>{{ post.title }}</p>
+    <a href="{% url 'core:profile' post.author.id %}">{{ post.author.username }}</a>
+    <p>{{ post.description }}</p>
+    <img src='{{ post.image.url }}' alt='{{ post.title }}'>
+    <p>{{ post.text }}</p>
+    <p>likes: {{ post.likes.count }}</p>
+    <form method="POST" action="{% url 'core:like_post' post.id %}">
+        {% csrf_token %}
+        <button type='submit'>Like</button>
+    </form>
+    {% if comments %}
+    <h3>Comments: </h3>
+    {% for comment in comments %}
+    <p>{{comment.author}}</p>
+    <p>{{comment.date_pub}}</p>
+    <p>{{comment.text}}</p>
+    {% endfor %}
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+        {{ comment_form }}
+        <button type='submit'>Добавить комментарий</button>
+    </form>
+
+</body>
+</html>

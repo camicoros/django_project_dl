@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% if post.author == user %}
+    <form method="post">
+        {% csrf_token %}
+        <button type='submit'>Delete post</button>
+    </form>
+    <a href="{% url 'core:post_detail' post.id %}">NONONO!</a>
+    {% else %}
+    <h1>Вы не можете удалить этот пост!</h1>
+    {% endif %}
+
+</body>
+</html>
