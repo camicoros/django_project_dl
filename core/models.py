@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.base import Model
 from django.utils import timezone
+from .validators import validate_date_edit
 
 
 def user_avatar_path(instance, filename):
@@ -26,13 +27,13 @@ class Post(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(max_length=500)
     text = models.TextField(max_length=2500)
-    date_pub = models.DateTimeField(default=timezone.now)
-    date_edit = models.DateTimeField(default=timezone.now)
+    date_pub = models.DateTimeField(auto_now_add=True)
+    date_edit = models.DateTimeField(auto_now=True, validators=[validate_date_edit, ])
     likes = models.ManyToManyField(User, related_name='users_likes_it', blank=True)
-    image = models.ImageField(upload_to=post_image_path)
+    image = models.ImageField(upload_to=post_image_path, null=True, blank=True)
 
     def __str__(self):
-        return self.title
+        return f'{self.title} - {self.date_edit.strftime("%d %m %Y")}'
 
     @property
     def image_url(self):
@@ -40,6 +41,10 @@ class Post(models.Model):
             return self.image.url
         else:
             return '#'
+
+    @property
+    def get_likes(self):
+        return self.likes.count()
 
 
 class Comment(models.Model):

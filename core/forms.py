@@ -8,7 +8,7 @@ class PostForm(forms.ModelForm):
     
     class Meta:
         model = Post
-        fields = ['title', 'description', 'text', 'date_pub', 'image']
+        fields = ['title', 'description', 'text', 'image']
 
         labels = {
             'title': 'Название',
@@ -17,7 +17,6 @@ class PostForm(forms.ModelForm):
 
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'описание'}),
-            'date_pub': forms.DateTimeInput(),
         }
     
     def clean_title(self):
